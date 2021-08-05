@@ -1,8 +1,9 @@
 from flask import Flask
 import pandas as pd
-from flask import request
+from flask import request, send_from_directory
 import pymysql
 import json
+import os
 
 host = 'localhost'
 port = 3306
@@ -43,7 +44,10 @@ def createNewRecordById():
     # 涉及写操作要注意提交
     conn.commit()
     cursor.close()  # 先关闭游标
-    return "111111"
+    response_json = {}
+    response_json['signal'] = '200'
+    res = json.dumps(response_json, ensure_ascii=False)
+    return res
 
 '''根据用户id号获取该用户对应的所有记录Id'''
 @app.route("/getAllRecordsNoByUserId")
@@ -69,21 +73,36 @@ def getAllRecordsNoByUserId():
         temp_record['user_id'] = record[3]
         record_list.append(temp_record)
     print(record_list)
+    response_json = {}
+    response_json['signal']='200'
+    response_json['records']=record_list
     cursor.close()  # 先关闭游标
-    res = json.dumps(record_list, ensure_ascii=False)
+    res = json.dumps(response_json, ensure_ascii=False)
     return res
 
 '''根据记录的ID号获取蛀牙的未处理过的数据'''
-@app.route("/getDataById")
-def getDataById():
+@app.route("/getDataByNo")
+def getDataByNo():
     # get the query args
     record_no = request.args.get("record_no")
     database_pd = getCsv("data", record_no)
     print(database_pd)
+
+    head_list = list(database_pd.columns)  # 拿到表头: [A, B, C, D]
+    list_dic = []
+    for i in database_pd.values:  # i 为每一行的value的列表：[a2, b2, c3, d2]
+        a_line = dict(zip(head_list, i))
+        list_dic.append(a_line)
     # 将 DataFrame  数据再次打包为 JSON 并传回
-    res = database_pd.to_json(orient="records", force_ascii=False)
+    response_json = {}
+    response_json['signal'] = '200'
+    response_json['data']=list_dic
+    res = json.dumps(response_json, ensure_ascii=False)
     return res
 
-@app.route("/getAnalysis")
-def getAnalysis():
-    return ""
+@app.route("/getReportByNo")
+def getReportByNo():
+    # get the query args
+    record_no = request.args.get("record_no")
+    directory = os.getcwd()  # 假设在当前目录
+    return send_from_directory(directory, "database/report/"+str(record_no)+".pdf",as_attachment=True)
