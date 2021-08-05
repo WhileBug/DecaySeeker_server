@@ -26,9 +26,6 @@ def getCsv(signal, record_no):
         database_pd = pd.read_csv("database/report/" + str(record_no) + ".csv",index_col=0)
     return database_pd
 app = Flask(__name__)
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
 
 @app.route("/createNewRecordById")
 def createNewRecordById():
