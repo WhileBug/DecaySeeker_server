@@ -1,0 +1,11 @@
+,id,name,position
+0,1,Wang,manager
+1,2,Fang,manager
+2,3,Luo,front
+3,4,Li,front
+4,5,Yu,back
+5,6,Tian,back
+6,7,Wang,algorithm
+7,8,Long,algorithm
+8,9,Zeng,database
+9,10,Deng,test
