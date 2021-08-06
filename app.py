@@ -91,7 +91,8 @@ def getDataByNo():
     head_list = list(database_pd.columns)  # 拿到表头: [A, B, C, D]
     list_dic = []
     for i in database_pd.values:  # i 为每一行的value的列表：[a2, b2, c3, d2]
-        a_line = dict(zip(head_list, str(i)))
+        i = i.tolist()
+        a_line = dict(zip(head_list, i))
         list_dic.append(a_line)
     # 将 DataFrame  数据再次打包为 JSON 并传回
     response_json = {}
