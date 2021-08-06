@@ -230,7 +230,7 @@ getReportByNo接口
 
 
 
-小程序就根据用户id新建一次检查任务（接口createNewRecordById），然后通过用户id查找该用户已经有过的检查任务记录（getAllRecordsNoByUserId），点击一个记录，可以根据获取到的记录No查找记录的原始数据（getDataByNo），也可以根据获取到的记录No查找记录的分析报告pdf（getReportByNo）
+小程序根据用户id新建一次检查任务（接口createNewRecordById），然后通过用户id查找该用户已经有过的检查任务记录（getAllRecordsNoByUserId），点击一个记录，可以根据获取到的记录No查找记录的原始数据（getDataByNo），也可以根据获取到的记录No查找记录的分析报告pdf（getReportByNo）
 
 ## 与设备端的交互
 
