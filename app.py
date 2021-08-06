@@ -105,4 +105,10 @@ def getReportByNo():
     # get the query args
     record_no = request.args.get("record_no")
     directory = os.getcwd()  # 假设在当前目录
-    return send_from_directory(directory, "database/report/"+str(record_no)+".pdf",as_attachment=True)
+    try:
+        file = send_from_directory(directory, "database/report/"+str(record_no)+".pdf",as_attachment=True)
+        return file
+    except:
+        response_json = {}
+        response_json['signal'] = '200'
+        return response_json
