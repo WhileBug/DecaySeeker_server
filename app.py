@@ -5,6 +5,7 @@ import pymysql
 import json
 import os
 import random
+import time
 
 host = 'localhost'
 port = 3306
@@ -230,6 +231,7 @@ def getChatById():
         chat_file = open('./database/chat_record/' + str(doctor_id) + '-' + str(patient_id) + '.json', 'r',
                          encoding='utf8')
     chat_data = json.load(chat_file)
+    chat_file.close()
     response_json = {}
 
     if(chat_data['chat_records']==[]):
@@ -239,5 +241,52 @@ def getChatById():
         response_json['signal'] = '200'
         response_json['chat_records'] = chat_data['chat_records']
     res = json.dumps(response_json, ensure_ascii=False)
+    return res
+
+'''根据患者id与医生id更新对话记录'''
+@app.route("/addChatById")
+def addChatById():
+    # get the query args
+    doctor_id = request.args.get("doctor_id")
+    patient_id = request.args.get("patient_id")
+    sender = request.args.get("sender")
+    content = request.args.get("content")
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+    # 读取json文件内容,返回字典格式
+    try:
+        chat_file = open('./database/chat_record/'+str(doctor_id)+'-'+str(patient_id)+'.json', 'r', encoding='utf8')
+    #如果没有聊天文件，则重新创建
+    except:
+        new_chat_json = {
+          "doctor_id": doctor_id,
+          "patient_id": patient_id,
+          "chat_records": []
+        }
+        chat_file = open('./database/chat_record/' + str(doctor_id) + '-' + str(patient_id) + '.json', 'w+', encoding='utf8')
+        json.dump(new_chat_json, chat_file, ensure_ascii=False)
+        chat_file.close()
+        chat_file = open('./database/chat_record/' + str(doctor_id) + '-' + str(patient_id) + '.json', 'r',
+                         encoding='utf8')
+    chat_data = json.load(chat_file)
     chat_file.close()
+    new_chat_record={}
+    if(sender=='doctor'):
+        new_chat_record['sender'] = "doctor"
+        new_chat_record['receiver'] = "patient"
+    if (sender == 'patient'):
+        new_chat_record['sender'] = "patient"
+        new_chat_record['receiver'] = "doctor"
+    new_chat_record['timestamp']=timestamp
+    new_chat_record['content']=content
+    chat_data['chat_records'].append(new_chat_record)
+
+    chat_file = open('./database/chat_record/' + str(doctor_id) + '-' + str(patient_id) + '.json', 'w+',
+                     encoding='utf8')
+    json.dump(chat_data, chat_file, ensure_ascii=False)
+    chat_file.close()
+
+    response_json = {}
+    response_json['signal'] = '200'
+    res = json.dumps(response_json, ensure_ascii=False)
     return res
