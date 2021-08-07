@@ -167,6 +167,7 @@ def getDoctorById():
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM doctors WHERE id='+str(doctor_id))
     doctor = cursor.fetchone()
+    cursor.close()  # 先关闭游标
     print(doctor)
     doctor_dict = {}
     doctor_dict['id']=doctor[0]
@@ -177,7 +178,7 @@ def getDoctorById():
     response_json = {}
     response_json['signal']='200'
     response_json['doctor']=doctor_dict
-    cursor.close()  # 先关闭游标
+
     res = json.dumps(response_json, ensure_ascii=False)
     return res
 
@@ -189,6 +190,7 @@ def getAllDoctors():
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM doctors')
     doctors = cursor.fetchmany()
+    cursor.close()  # 先关闭游标
     doctors_dict_list = []
     for doctor in doctors:
         doctor_dict = {}
@@ -196,12 +198,12 @@ def getAllDoctors():
         doctor_dict['name'] = doctor[1]
         doctor_dict['department'] = doctor[2]
         doctor_dict['field'] = doctor[3]
-        doctor_dict['phone'] = doctor[4]
+        doctor_dict['introduction'] = doctor[4]
         doctors_dict_list.append(doctor_dict)
     response_json = {}
     response_json['signal']='200'
     response_json['doctor']=doctors_dict_list
-    cursor.close()  # 先关闭游标
+
     res = json.dumps(response_json, ensure_ascii=False)
     return res
 
