@@ -38,6 +38,15 @@ def getCsv(signal, record_no):
     return database_pd
 app = Flask(__name__)
 
+'''
+病患端接口：
+createNewRecordById
+getTokenByCheckNo
+getAllRecordsNoByUserId
+getDataByNo
+getReportByNo
+'''
+
 @app.route("/createNewRecordById")
 def createNewRecordById():
     # get the query args
@@ -142,3 +151,93 @@ def getReportByNo():
         response_json = {}
         response_json['signal'] = '200'
         return response_json
+
+'''
+医生端接口：
+'''
+
+'''根据医生编号获取单个医生信息'''
+@app.route("/getDoctorById")
+def getDoctorById():
+    # get the query args
+    doctor_id = request.args.get("doctor_id")
+
+    # 获取游标
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM doctors WHERE id='+str(doctor_id))
+    doctor = cursor.fetchone()
+    print(doctor)
+    doctor_dict = {}
+    doctor_dict['id']=doctor[0]
+    doctor_dict['name'] = doctor[1]
+    doctor_dict['department'] = doctor[2]
+    doctor_dict['field'] = doctor[3]
+    doctor_dict['phone'] = doctor[4]
+    response_json = {}
+    response_json['signal']='200'
+    response_json['doctor']=doctor_dict
+    cursor.close()  # 先关闭游标
+    res = json.dumps(response_json, ensure_ascii=False)
+    return res
+
+'''返回所有医生信息'''
+@app.route("/getAllDoctors")
+def getAllDoctors():
+
+    # 获取游标
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM doctors')
+    doctors = cursor.fetchmany()
+    doctors_dict_list = []
+    for doctor in doctors:
+        doctor_dict = {}
+        doctor_dict['id']=doctor[0]
+        doctor_dict['name'] = doctor[1]
+        doctor_dict['department'] = doctor[2]
+        doctor_dict['field'] = doctor[3]
+        doctor_dict['phone'] = doctor[4]
+        doctors_dict_list.append(doctor_dict)
+    response_json = {}
+    response_json['signal']='200'
+    response_json['doctor']=doctors_dict_list
+    cursor.close()  # 先关闭游标
+    res = json.dumps(response_json, ensure_ascii=False)
+    return res
+
+'''根据患者id与医生id获取历史对话记录'''
+'''
+如果返回的json里面的signal是'200'，说明查询成功
+'''
+@app.route("/getChatById")
+def getChatById():
+    # get the query args
+    doctor_id = request.args.get("doctor_id")
+    patient_id = request.args.get("patient_id")
+
+    # 读取json文件内容,返回字典格式
+    try:
+        chat_file = open('./database/chat_record/'+str(doctor_id)+'-'+str(patient_id)+'.json', 'r', encoding='utf8')
+    #如果没有聊天文件，则重新创建
+    except:
+        new_chat_json = {
+          "doctor_id": doctor_id,
+          "patient_id": patient_id,
+          "chat_records": []
+        }
+        chat_file = open('./database/chat_record/' + str(doctor_id) + '-' + str(patient_id) + '.json', 'w+', encoding='utf8')
+        json.dump(new_chat_json, chat_file, ensure_ascii=False)
+        chat_file.close()
+        chat_file = open('./database/chat_record/' + str(doctor_id) + '-' + str(patient_id) + '.json', 'r',
+                         encoding='utf8')
+    chat_data = json.load(chat_file)
+    response_json = {}
+
+    if(chat_data['chat_records']==[]):
+        response_json['signal'] = '200'
+        response_json['chat_records'] = []
+    else:
+        response_json['signal'] = '200'
+        response_json['chat_records'] = chat_data['chat_records']
+    res = json.dumps(response_json, ensure_ascii=False)
+    chat_file.close()
+    return res
