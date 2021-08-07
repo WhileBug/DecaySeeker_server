@@ -4,6 +4,7 @@ from flask import request, send_from_directory
 import pymysql
 import json
 import os
+import random
 
 host = 'localhost'
 port = 3306
@@ -11,6 +12,15 @@ db = 'MothSeeker'
 user = 'admin'
 password = 'password'
 
+def ranstr(num):
+    # 猜猜变量名为啥叫 H
+    H = '0123456789'
+
+    salt = ''
+    for i in range(num):
+        salt += random.choice(H)
+
+    return salt
 
 # ---- 用pymysql 操作数据库
 def get_connection():
@@ -34,9 +44,9 @@ def createNewRecordById():
     user_id = request.args.get("user_id")
     # 获取游标
     cursor = conn.cursor()
-
+    token = ranstr(6)
     # 定义要执行的sql语句
-    sql = 'insert into check_record(status,user_id) values(0,'+str(user_id)+');'
+    sql = 'insert into check_record(status,user_id,token) values(0,'+str(user_id)+','+token+');'
 
     # 拼接并执行sql语句
     cursor.execute(sql)
@@ -46,6 +56,25 @@ def createNewRecordById():
     cursor.close()  # 先关闭游标
     response_json = {}
     response_json['signal'] = '200'
+    response_json['token']=token
+    res = json.dumps(response_json, ensure_ascii=False)
+    return res
+
+'''根据检查编号获取验证码'''
+@app.route("/getTokenByCheckNo")
+def getTokenByCheckNo():
+    # get the query args
+    record_no = request.args.get("record_no")
+
+    # 获取游标
+    cursor = conn.cursor()
+    cursor.execute('SELECT token FROM CHECK_RECORD WHERE id='+str(record_no))
+    token = cursor.fetchone()
+    print(token)
+    response_json = {}
+    response_json['signal']='200'
+    response_json['token']=token[0]
+    cursor.close()  # 先关闭游标
     res = json.dumps(response_json, ensure_ascii=False)
     return res
 
