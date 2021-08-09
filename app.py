@@ -174,7 +174,8 @@ def getDoctorById():
     doctor_dict['name'] = doctor[1]
     doctor_dict['department'] = doctor[2]
     doctor_dict['field'] = doctor[3]
-    doctor_dict['phone'] = doctor[4]
+    doctor_dict['introduction'] = doctor[4]
+    doctor_dict['phone'] = doctor[5]
     response_json = {}
     response_json['signal']='200'
     response_json['doctor']=doctor_dict
@@ -199,6 +200,7 @@ def getAllDoctors():
         doctor_dict['department'] = doctor[2]
         doctor_dict['field'] = doctor[3]
         doctor_dict['introduction'] = doctor[4]
+        doctor_dict['phone'] = doctor[5]
         doctors_dict_list.append(doctor_dict)
     response_json = {}
     response_json['signal']='200'
