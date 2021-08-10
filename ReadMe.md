@@ -186,7 +186,7 @@ http://127.0.0.1:5000/addChatById?doctor_id=1&patient_id=1&sender=doctor&content
 
 示例：
 
-http://127.0.0.1:5000/getAllDoctors?doctor_id=1&patient_id=1
+http://127.0.0.1:5000/getChatById?doctor_id=1&patient_id=1
 
 ```
 {
