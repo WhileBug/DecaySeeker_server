@@ -176,7 +176,7 @@ http://127.0.0.1:5000/addChatById?doctor_id=1&patient_id=1&sender=doctor&content
 }
 ```
 
-##### getAllDoctors接口
+##### getChatById接口
 
 查找之前聊天记录的接口
 
