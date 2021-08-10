@@ -186,11 +186,10 @@ def getDoctorById():
 '''返回所有医生信息'''
 @app.route("/getAllDoctors")
 def getAllDoctors():
-
     # 获取游标
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM doctors')
-    doctors = cursor.fetchmany()
+    doctors = cursor.fetchall()
     cursor.close()  # 先关闭游标
     doctors_dict_list = []
     for doctor in doctors:
