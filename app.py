@@ -97,7 +97,7 @@ def getAllRecordsNoByUserId():
 
     # 获取游标
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM CHECK_RECORD WHERE user_id='+str(user_id))
+    cursor.execute('SELECT * FROM check_record WHERE user_id='+str(user_id))
 
     record_list = []
     while 1:
