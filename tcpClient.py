@@ -45,7 +45,7 @@ sendMsg = {
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # 获取本地主机名
-host = socket.gethostname()
+host = '1.15.106.25'
 
 # 设置端口号
 port = 8848

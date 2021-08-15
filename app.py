@@ -6,6 +6,7 @@ import json
 import os
 import random
 import time
+from flask_cors import *
 
 host = '1.15.106.25'
 port = 3306
@@ -38,7 +39,7 @@ def getCsv(signal, record_no):
         database_pd = pd.read_csv("database/report/" + str(record_no) + ".csv",index_col=0)
     return database_pd
 app = Flask(__name__)
-
+CORS(app,supports_credentials=True)
 '''
 病患端接口：
 createNewRecordById
@@ -306,3 +307,6 @@ def addChatById():
     response_json['signal'] = '200'
     res = json.dumps(response_json, ensure_ascii=False)
     return res
+
+if __name__ == '__main__':
+  app.run(host='0.0.0.0', port=80)
