@@ -61,7 +61,7 @@ http://127.0.0.1:5000/getAllRecordsNoByUserId?user_id=1
 
 返回记录编号为record_no的记录的数据
 
-- recordNo：检查记录的编号No
+- record_no：检查记录的编号No
 
 示例：
 
@@ -84,17 +84,27 @@ http://127.0.0.1:5000/getDataByNo?record_no=1
 
 返回记录编号为record_no的记录的分析报告
 
-- recordNo：检查记录的编号No
+- record_no：检查记录的编号No
 
 示例：
 
 http://127.0.0.1:5000/getReportByNo?record_no=1
 
+##### getVideoByNo接口
+
+返回记录编号为record_no的记录的分析视频
+
+- record_no：检查记录的编号No
+
+示例：
+
+http://127.0.0.1:5000/getVideoByNo?record_no=1
+
 ##### getTokenByCheckNo接口
 
 返回编号为record_no的记录的验证码token
 
-- recordNo：检查记录的编号No
+- record_np：检查记录的编号No
 
 示例：
 

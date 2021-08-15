@@ -153,6 +153,19 @@ def getReportByNo():
         response_json['signal'] = '200'
         return response_json
 
+@app.route("/getVideoByNo")
+def getVideoByNo():
+    # get the query args
+    record_no = request.args.get("record_no")
+    directory = os.getcwd()  # 假设在当前目录
+    try:
+        file = send_from_directory(directory, "database/video/"+str(record_no)+".mp4",as_attachment=True)
+        return file
+    except:
+        response_json = {}
+        response_json['signal'] = '200'
+        return response_json
+
 '''
 医生端接口：
 '''
