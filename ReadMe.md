@@ -1,4 +1,4 @@
-# MothSeeker 服务器端代码
+# DecaySeeker 服务器端代码
 
 ./database：存储数据的文件夹
 
