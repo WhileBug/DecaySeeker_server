@@ -7,11 +7,11 @@ import os
 import random
 import time
 
-host = 'localhost'
+host = '1.15.106.25'
 port = 3306
 db = 'MothSeeker'
-user = 'admin'
-password = 'password'
+user = 'root'
+password = 'Admin_Password741'
 
 def ranstr(num):
     # 猜猜变量名为啥叫 H
