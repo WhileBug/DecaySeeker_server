@@ -5,8 +5,7 @@ import json
 
 sendMsg = {
     "method":"report",
-    "clientToken":234,
-    "timestamp":12312,
+    "clientToken":235,
     "params":[
         {
             "position":1,

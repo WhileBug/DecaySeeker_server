@@ -4,11 +4,11 @@ import sys
 import json
 import pandas as pd
 import pymysql
-host = 'localhost'
+host = '1.15.106.25'
 port = 3306
 db = 'MothSeeker'
-user = 'admin'
-password = 'password'
+user = 'root'
+password = 'Admin_Password741'
 
 
 # ---- 用pymysql 操作数据库
@@ -22,7 +22,7 @@ conn = get_connection()
 def getRecordNoByToken(token):
     # 获取游标
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM CHECK_RECORD WHERE TOKEN='+str(token))
+    cursor.execute('SELECT * FROM check_record WHERE TOKEN='+str(token))
     record = cursor.fetchone()
     cursor.close()
     return record[0]
@@ -51,7 +51,7 @@ serversocket = socket.socket(
     socket.AF_INET, socket.SOCK_STREAM)
 
 # 获取本地主机名
-host = socket.gethostname()
+host = '10.0.4.9'
 
 port = 8848
 
@@ -64,7 +64,6 @@ serversocket.listen(5)
 while True:
     # 建立客户端连接
     clientsocket, addr = serversocket.accept()
-
     print("连接地址: %s" % str(addr))
     record_data = []
     recvMsg = clientsocket.recv(1024)

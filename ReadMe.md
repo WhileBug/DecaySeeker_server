@@ -265,7 +265,6 @@ http://127.0.0.1:5000/getChatById?doctor_id=1&patient_id=1
 sendMsg = {
     "method":"report",
     "clientToken":"123",
-    "timestamp":12312,
     "params":{
         "position":1,
         "ph":5.5,
@@ -280,3 +279,8 @@ sendMsg = {
 
 - IP：1.15.106.25
 - port：80
+
+与设备端交互已上云：
+
+- IP：1.15.106.25
+- port：8848
