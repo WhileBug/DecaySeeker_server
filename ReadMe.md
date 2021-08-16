@@ -280,6 +280,11 @@ sendMsg = {
 - IP：1.15.106.25
 - port：80
 
+如果接口失效，则首先登陆我的服务器，然后输入一下命令：
+cd MothSeeker_server
+nohup python3 app.py &
+重启服务
+
 与设备端交互已上云：
 
 - IP：1.15.106.25
